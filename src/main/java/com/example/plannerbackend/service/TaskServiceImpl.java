@@ -4,6 +4,8 @@ import com.example.plannerbackend.entity.Task;
 import com.example.plannerbackend.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,24 +24,32 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findById(id).orElse(null);
     }
 
-    public Task updateTask(Long id, Task updatedTask) {
+    public boolean updateTask(Long id, Task updatedTask) {
         return taskRepository.findById(id)
                 .map(task -> {
                     task.setName(updatedTask.getName());
                     task.setDate(updatedTask.getDate());
                     task.setPriority(updatedTask.getPriority());
                     task.setState(updatedTask.getState());
-                    return taskRepository.save(task);
+                    taskRepository.save(task);
+                    return true;
                 })
-                .orElse(null);
+                .orElse(false);
     }
 
     public void createTask(Task task) {
         taskRepository.save(task);
     }
 
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+    public boolean deleteTask(Long id) {
+        boolean exists = taskRepository.existsById(id);
+        if(exists) {
+            taskRepository.deleteById(id);
+            return true;
+        }
+        else
+            return false;
+
     }
 
     public void deleteAllTasks() {
