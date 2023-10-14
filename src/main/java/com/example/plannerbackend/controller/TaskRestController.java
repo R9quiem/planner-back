@@ -42,7 +42,7 @@ public class TaskRestController {
         taskService.deleteTask(id);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/all")
     public void deleteAllTasks() {
         taskService.deleteAllTasks();
     }
