@@ -11,8 +11,8 @@ public interface TaskService {
 
     public List<Task> getAllTasks();
     public Task getTaskById(Long id);
-    public Task updateTask(Long id, Task updatedTask);
+    public boolean updateTask(Long id, Task updatedTask);
     public void createTask(Task task);
-    public void deleteTask(Long id);
+    public boolean deleteTask(Long id);
     public void deleteAllTasks();
 }
