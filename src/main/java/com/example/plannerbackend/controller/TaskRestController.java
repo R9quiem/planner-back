@@ -30,8 +30,9 @@ public class TaskRestController {
     }
 
     @PostMapping
-    public void createTask(@RequestBody Task task) {
+    public ResponseEntity<?> createTask(@RequestBody Task task) {
         taskService.createTask(task);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
