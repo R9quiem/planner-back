@@ -1,4 +1,4 @@
-package com.example.plannerbackend.entity;
+package task_planner_backend.tasklogic.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
@@ -18,6 +19,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
 
     private String name;
 

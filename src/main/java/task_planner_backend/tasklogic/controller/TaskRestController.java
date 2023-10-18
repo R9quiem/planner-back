@@ -1,7 +1,7 @@
-package com.example.plannerbackend.controller;
+package task_planner_backend.tasklogic.controller;
 
-import com.example.plannerbackend.entity.Task;
-import com.example.plannerbackend.service.TaskServiceImpl;
+import task_planner_backend.tasklogic.entity.Task;
+import task_planner_backend.tasklogic.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

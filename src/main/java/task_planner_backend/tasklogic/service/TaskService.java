@@ -1,9 +1,6 @@
-package com.example.plannerbackend.service;
+package task_planner_backend.tasklogic.service;
 
-import com.example.plannerbackend.entity.Task;
-import com.example.plannerbackend.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import task_planner_backend.tasklogic.entity.Task;
 
 import java.util.List;
 

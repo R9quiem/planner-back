@@ -1,11 +1,9 @@
-package com.example.plannerbackend.service;
+package task_planner_backend.tasklogic.service;
 
-import com.example.plannerbackend.entity.Task;
-import com.example.plannerbackend.repository.TaskRepository;
+import task_planner_backend.tasklogic.entity.Task;
+import task_planner_backend.tasklogic.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
