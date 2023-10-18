@@ -13,15 +13,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
-
+    @Override
     public List<Task> getAllTasks() {
         return taskRepository.findAll(Sort.by(Sort.Order.asc("date"),
                 Sort.Order.desc("priority")));
     }
+    @Override
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElse(null);
     }
-
+    @Override
     public boolean updateTask(Long id, Task updatedTask) {
         return taskRepository.findById(id)
                 .map(task -> {
@@ -34,11 +35,11 @@ public class TaskServiceImpl implements TaskService {
                 })
                 .orElse(false);
     }
-
+    @Override
     public void createTask(Task task) {
         taskRepository.save(task);
     }
-
+    @Override
     public boolean deleteTask(Long id) {
         boolean exists = taskRepository.existsById(id);
         if(exists) {
@@ -49,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
             return false;
 
     }
-
+    @Override
     public void deleteAllTasks() {
         taskRepository.deleteAll();
     }
