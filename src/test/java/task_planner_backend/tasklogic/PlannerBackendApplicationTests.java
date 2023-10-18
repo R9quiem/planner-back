@@ -1,4 +1,4 @@
-package com.example.plannerbackend;
+package task_planner_backend.tasklogic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
