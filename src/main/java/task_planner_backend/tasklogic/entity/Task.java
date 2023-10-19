@@ -35,10 +35,12 @@ public class Task {
     private Date createdAt;
 
     @Column(name = "priority")
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    private EPriority priority;
 
     @Column(name = "state")
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private EState state;
 
     @PrePersist
     public void prePersist() {
