@@ -9,12 +9,15 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 #  sql:
 #    init:
 #      mode: always
 #      schema-locations: classpath*:/init.sql
 #      data-locations: classpath*:/data.sql
-server:
-  servlet:
-    context-path: /api
+#server:
+#  servlet:
+#    context-path: /api
+app:
+  jwtSecret: MegaLargeSigningSecretKeyForDemoApplicationMegaLargeSigningSecretKeyForDemoApplication
+  jwtExpirationMs: 86400000
