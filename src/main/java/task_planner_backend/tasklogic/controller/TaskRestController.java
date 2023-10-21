@@ -1,9 +1,7 @@
 package task_planner_backend.tasklogic.controller;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import task_planner_backend.auth.service.UserDetailsImpl;
-import task_planner_backend.tasklogic.entity.Task;
+import task_planner_backend.tasklogic.model.Task;
+import task_planner_backend.tasklogic.model.dto.TaskDTO;
 import task_planner_backend.tasklogic.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,14 +32,14 @@ public class TaskRestController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<?> createTask(@RequestBody Task task) {
-        taskService.createTask(task);
+    public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO) {
+        taskService.createTask(taskDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/task/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
-        final boolean updated = taskService.updateTask(id,updatedTask);
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskDTO updatedTaskDTO) {
+        final boolean updated = taskService.updateTask(id,updatedTaskDTO);
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

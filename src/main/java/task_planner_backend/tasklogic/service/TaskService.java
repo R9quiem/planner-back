@@ -1,6 +1,7 @@
 package task_planner_backend.tasklogic.service;
 
-import task_planner_backend.tasklogic.entity.Task;
+import task_planner_backend.tasklogic.model.Task;
+import task_planner_backend.tasklogic.model.dto.TaskDTO;
 
 import java.util.List;
 
@@ -8,8 +9,8 @@ public interface TaskService {
 
     public List<Task> getAllTasks();
     public Task getTaskById(Long id);
-    public boolean updateTask(Long id, Task updatedTask);
-    public void createTask(Task task);
+    public boolean updateTask(Long id, TaskDTO updatedTaskDTO);
+    public void createTask(TaskDTO taskDTO);
     public boolean deleteTask(Long id);
     public void deleteAllTasks();
 }

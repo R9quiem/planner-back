@@ -4,9 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-
-import task_planner_backend.tasklogic.entity.Task;
 
 @Table(name = "users")
 @Entity
@@ -27,6 +24,10 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
 }
