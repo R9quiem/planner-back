@@ -3,10 +3,9 @@ package task_planner_backend.tasklogic.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import task_planner_backend.auth.model.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -41,6 +40,9 @@ public class Task {
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private EState state;
+
+    @Column(name = "user_id")
+    private Long user_id;
 
     @PrePersist
     public void prePersist() {

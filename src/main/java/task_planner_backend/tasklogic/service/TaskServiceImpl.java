@@ -1,10 +1,14 @@
 package task_planner_backend.tasklogic.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import task_planner_backend.auth.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.entity.Task;
 import task_planner_backend.tasklogic.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.util.Collections;
+import java.util.Comparator;
 
 import java.util.List;
 
@@ -15,8 +19,13 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
     @Override
     public List<Task> getAllTasks() {
-        return taskRepository.findAll(Sort.by(Sort.Order.asc("date"),
-                Sort.Order.desc("priority")));
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long user_id = userDetails.getId();
+        List<Task> tasks = taskRepository.findAllTasksByUserId(user_id, Sort.by(
+                Sort.Order.asc("date"),
+                Sort.Order.desc("priority")
+        ));
+        return tasks;
     }
     @Override
     public Task getTaskById(Long id) {
@@ -37,6 +46,9 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     public void createTask(Task task) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long user_id = userDetails.getId();
+        task.setUser_id(user_id);
         taskRepository.save(task);
     }
     @Override
