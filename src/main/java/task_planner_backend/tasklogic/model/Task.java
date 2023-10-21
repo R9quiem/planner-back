@@ -1,9 +1,10 @@
-package task_planner_backend.tasklogic.entity;
+package task_planner_backend.tasklogic.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import task_planner_backend.auth.model.User;
+import task_planner_backend.tasklogic.model.dto.TaskDTO;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,35 +20,36 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    @Column(name = "dateCreatedAt")
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @Column(name = "priority")
     @Enumerated(EnumType.STRING)
     private EPriority priority;
 
-    @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private EState state;
 
-    @Column(name = "user_id")
-    private Long user_id;
+    @ManyToOne
+    private User user;
 
     @PrePersist
     public void prePersist() {
         // Устанавливаем поле date на текущую дату при создании задачи
         date = new Date();
+    }
+    public void updateFromDTO(TaskDTO taskDTO) {
+        this.setName(taskDTO.getName());
+        this.setDescription(taskDTO.getDescription());
+        this.setDate(taskDTO.getDate());
+        this.setPriority(taskDTO.getPriority());
+        this.setState(taskDTO.getState());
     }
 
 }

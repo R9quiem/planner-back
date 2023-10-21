@@ -1,14 +1,14 @@
 package task_planner_backend.tasklogic.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import task_planner_backend.auth.model.User;
 import task_planner_backend.auth.service.UserDetailsImpl;
-import task_planner_backend.tasklogic.entity.Task;
+import task_planner_backend.tasklogic.model.Task;
+import task_planner_backend.tasklogic.model.dto.TaskDTO;
 import task_planner_backend.tasklogic.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
-import java.util.Comparator;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasks() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long user_id = userDetails.getId();
-        List<Task> tasks = taskRepository.findAllTasksByUserId(user_id, Sort.by(
+        Long userId = userDetails.getId();
+        List<Task> tasks = taskRepository.findAllTasksByUserId(userId, Sort.by(
                 Sort.Order.asc("date"),
                 Sort.Order.desc("priority")
         ));
@@ -32,23 +32,25 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findById(id).orElse(null);
     }
     @Override
-    public boolean updateTask(Long id, Task updatedTask) {
-        return taskRepository.findById(id)
-                .map(task -> {
-                    task.setName(updatedTask.getName());
-                    task.setDate(updatedTask.getDate());
-                    task.setPriority(updatedTask.getPriority());
-                    task.setState(updatedTask.getState());
-                    taskRepository.save(task);
-                    return true;
-                })
-                .orElse(false);
+    public boolean updateTask(Long id, TaskDTO updatedTaskDTO) {
+        Task existingTask = taskRepository.findById(id).orElse(null);
+        if (existingTask != null) {
+            existingTask.updateFromDTO(updatedTaskDTO);
+            taskRepository.save(existingTask);
+            return true;
+        }
+        return false;
     }
     @Override
-    public void createTask(Task task) {
+    public void createTask(TaskDTO taskDTO) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long user_id = userDetails.getId();
-        task.setUser_id(user_id);
+        Long userId = userDetails.getId();
+        User user = new User(userId);
+
+        Task task = new Task();
+        task.setUser(user);
+        task.updateFromDTO(taskDTO);
+
         taskRepository.save(task);
     }
     @Override
@@ -60,10 +62,11 @@ public class TaskServiceImpl implements TaskService {
         }
         else
             return false;
-
     }
     @Override
     public void deleteAllTasks() {
-        taskRepository.deleteAll();
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = userDetails.getId();
+        taskRepository.deleteAllTasksByUserId(userId);
     }
 }
