@@ -1,5 +1,8 @@
 package task_planner_backend.tasklogic.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import task_planner_backend.auth.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.entity.Task;
 import task_planner_backend.tasklogic.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class TaskRestController {
 
     @Autowired
@@ -18,7 +21,8 @@ public class TaskRestController {
 
     @GetMapping("/tasks")
     public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(taskService.getAllTasks());
+        List<Task> tasks = taskService.getAllTasks();
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/task/{id}")
