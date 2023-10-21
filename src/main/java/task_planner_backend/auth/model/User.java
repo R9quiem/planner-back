@@ -26,8 +26,4 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id) {
-        this.id = id;
-    }
-
 }

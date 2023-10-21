@@ -47,7 +47,8 @@ public class TaskServiceImpl implements TaskService {
     public void createTask(TaskDTO taskDTO) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
-        User user = new User(userId);
+        User user = new User();
+        user.setId(userId);
 
         Task task = new Task();
         task.setUser(user);
