@@ -29,7 +29,9 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElse(null);
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = userDetails.getId();
+        return taskRepository.findTaskById(id,userId);
     }
     @Override
     public boolean updateTask(Long id, TaskDTO updatedTaskDTO) {
