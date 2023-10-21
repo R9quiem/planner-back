@@ -18,17 +18,17 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskRepository taskRepository;
     @Override
-    public List<Task> getAllTasks() {
+    public List<TaskDTO> getAllTasks() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
-        List<Task> tasks = taskRepository.findAllTasksByUserId(userId, Sort.by(
+        List<TaskDTO> tasks = taskRepository.findAllTasksByUserId(userId, Sort.by(
                 Sort.Order.asc("date"),
                 Sort.Order.desc("priority")
         ));
         return tasks;
     }
     @Override
-    public Task getTaskById(Long id) {
+    public TaskDTO getTaskById(Long id) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
         return taskRepository.findTaskById(id,userId);

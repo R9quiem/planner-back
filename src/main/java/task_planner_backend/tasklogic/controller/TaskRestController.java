@@ -18,14 +18,14 @@ public class TaskRestController {
     private TaskServiceImpl taskService;
 
     @GetMapping("/tasks")
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
+    public ResponseEntity<List<TaskDTO>> getAllTasks() {
+        List<TaskDTO> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/task/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Task task = taskService.getTaskById(id);
+    public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long id) {
+        TaskDTO task = taskService.getTaskById(id);
         return task != null
                 ? new ResponseEntity<>(task, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

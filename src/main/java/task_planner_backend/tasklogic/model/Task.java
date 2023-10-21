@@ -42,7 +42,7 @@ public class Task {
     @PrePersist
     public void prePersist() {
         // Устанавливаем поле date на текущую дату при создании задачи
-        date = new Date();
+         date = new Date();
     }
     public void updateFromDTO(TaskDTO taskDTO) {
         this.setName(taskDTO.getName());
