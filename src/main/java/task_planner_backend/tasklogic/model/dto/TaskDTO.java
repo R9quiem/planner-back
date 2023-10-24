@@ -1,8 +1,10 @@
 package task_planner_backend.tasklogic.model.dto;
 
 import lombok.Data;
+import task_planner_backend.auth.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.model.EPriority;
 import task_planner_backend.tasklogic.model.EState;
+import task_planner_backend.tasklogic.model.Task;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,4 +25,22 @@ public class TaskDTO {
 
     @NotNull
     private EState state;
+
+    public TaskDTO(String name, String description, Date date, EPriority priority, EState state) {
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.priority = priority;
+        this.state = state;
+    }
+
+    public static TaskDTO build(Task task) {
+        return new TaskDTO(
+                task.getName(),
+                task.getDescription(),
+                task.getDate(),
+                task.getPriority(),
+                task.getState()
+        );
+    }
 }

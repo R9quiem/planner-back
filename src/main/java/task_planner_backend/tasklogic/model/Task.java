@@ -44,12 +44,24 @@ public class Task {
         // Устанавливаем поле date на текущую дату при создании задачи
          date = new Date();
     }
-    public void updateFromDTO(TaskDTO taskDTO) {
-        this.setName(taskDTO.getName());
-        this.setDescription(taskDTO.getDescription());
-        this.setDate(taskDTO.getDate());
-        this.setPriority(taskDTO.getPriority());
-        this.setState(taskDTO.getState());
+
+    public Task(String name, String description, Date date, EPriority priority, EState state, User user) {
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.priority = priority;
+        this.state = state;
+        this.user = user;
+    }
+    public static Task build(TaskDTO taskDTO, User user) {
+        return new Task(
+                taskDTO.getName(),
+                taskDTO.getDescription(),
+                taskDTO.getDate(),
+                taskDTO.getPriority(),
+                taskDTO.getState(),
+                user
+        );
     }
 
 }

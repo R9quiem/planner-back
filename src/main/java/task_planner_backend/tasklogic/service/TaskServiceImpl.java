@@ -31,8 +31,7 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDTO> taskDTOs = new ArrayList<>();
 
         for (Task task : tasks) {
-            TaskDTO taskDTO = new TaskDTO();
-            taskDTO = convertToTaskDTO(task);
+            TaskDTO taskDTO = TaskDTO.build(task);
             taskDTOs.add(taskDTO);
         }
         return taskDTOs;
@@ -43,14 +42,19 @@ public class TaskServiceImpl implements TaskService {
         Long userId = userDetails.getId();
         Task task = taskRepository.findTaskById(id,userId);
 
-        return convertToTaskDTO(task);
+        return TaskDTO.build(task);
     }
 
     @Override
     public boolean updateTask(Long id, TaskDTO updatedTaskDTO) {
         Task existingTask = taskRepository.findById(id).orElse(null);
         if (existingTask != null) {
-            existingTask.updateFromDTO(updatedTaskDTO);
+            UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Long userId = userDetails.getId();
+
+            User user = new User(userId);
+
+            existingTask = Task.build(updatedTaskDTO,user);
             taskRepository.save(existingTask);
             return true;
         }
@@ -60,12 +64,10 @@ public class TaskServiceImpl implements TaskService {
     public void createTask(TaskDTO taskDTO) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
-        User user = new User();
-        user.setId(userId);
 
-        Task task = new Task();
-        task.setUser(user);
-        task.updateFromDTO(taskDTO);
+        User user = new User(userId);
+
+        Task task = Task.build(taskDTO,user);
 
         taskRepository.save(task);
     }
@@ -86,14 +88,4 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteAllTasksByUserId(userId);
     }
 
-    public static TaskDTO convertToTaskDTO(Task task) {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setName(task.getName());
-        taskDTO.setDescription(task.getDescription());
-        taskDTO.setDate(task.getDate());
-        taskDTO.setPriority(task.getPriority());
-        taskDTO.setState(task.getState());
-
-        return taskDTO;
-    }
 }
