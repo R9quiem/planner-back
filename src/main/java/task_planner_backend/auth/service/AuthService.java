@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import task_planner_backend.auth.config.jwt.JwtUtils;
 import task_planner_backend.auth.model.User;
-import task_planner_backend.auth.pojo.JwtResponse;
-import task_planner_backend.auth.pojo.LoginRequest;
-import task_planner_backend.auth.pojo.MessageResponse;
-import task_planner_backend.auth.pojo.SignupRequest;
+import task_planner_backend.auth.model.dto.JwtResponse;
+import task_planner_backend.auth.model.dto.LoginRequest;
+import task_planner_backend.auth.model.dto.MessageResponse;
+import task_planner_backend.auth.model.dto.SignupRequest;
 import task_planner_backend.auth.repository.UserRepository;
 
 @Service

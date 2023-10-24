@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import task_planner_backend.auth.pojo.JwtResponse;
-import task_planner_backend.auth.pojo.LoginRequest;
-import task_planner_backend.auth.pojo.SignupRequest;
+import task_planner_backend.auth.model.dto.JwtResponse;
+import task_planner_backend.auth.model.dto.LoginRequest;
+import task_planner_backend.auth.model.dto.SignupRequest;
 import task_planner_backend.auth.service.AuthService;
 
 

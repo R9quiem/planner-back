@@ -1,9 +1,8 @@
-package task_planner_backend.auth.pojo;
+package task_planner_backend.auth.model.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 
 @Data

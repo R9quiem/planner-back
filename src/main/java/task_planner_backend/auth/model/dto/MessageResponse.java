@@ -1,7 +1,6 @@
-package task_planner_backend.auth.pojo;
+package task_planner_backend.auth.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
