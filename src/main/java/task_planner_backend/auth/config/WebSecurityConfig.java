@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import task_planner_backend.auth.config.jwt.AuthEntryPointJwt;
 import task_planner_backend.auth.config.jwt.AuthTokenFilter;
-import task_planner_backend.auth.service.UserDetailsServiceImpl;
+import task_planner_backend.tasklogic.service.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 @Configuration

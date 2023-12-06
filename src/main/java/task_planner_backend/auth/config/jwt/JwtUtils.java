@@ -10,7 +10,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import task_planner_backend.auth.service.UserDetailsImpl;
+import task_planner_backend.tasklogic.service.service.UserDetailsImpl;
 
 @Component
 public class JwtUtils {

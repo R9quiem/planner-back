@@ -1,4 +1,4 @@
-package task_planner_backend.auth.service;
+package task_planner_backend.tasklogic.service.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

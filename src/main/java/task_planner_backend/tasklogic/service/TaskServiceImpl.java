@@ -2,7 +2,7 @@ package task_planner_backend.tasklogic.service;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import task_planner_backend.auth.model.User;
-import task_planner_backend.auth.service.UserDetailsImpl;
+import task_planner_backend.tasklogic.service.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.model.Task;
 import task_planner_backend.tasklogic.model.dto.TaskDTO;
 import task_planner_backend.tasklogic.repository.TaskRepository;

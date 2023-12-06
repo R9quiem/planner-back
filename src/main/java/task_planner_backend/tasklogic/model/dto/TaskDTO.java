@@ -1,7 +1,6 @@
 package task_planner_backend.tasklogic.model.dto;
 
 import lombok.Data;
-import task_planner_backend.auth.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.model.EPriority;
 import task_planner_backend.tasklogic.model.EState;
 import task_planner_backend.tasklogic.model.Task;
