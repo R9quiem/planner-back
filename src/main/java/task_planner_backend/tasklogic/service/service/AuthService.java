@@ -52,4 +52,8 @@ public class AuthService {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User CREATED"));
     }
+
+    public ResponseEntity<?> passwordResetEmail(PasswordResetRequest passwordResetRequest){
+        return ResponseEntity.ok(new MessageResponse(" UWU "));
+    }
 }

@@ -10,6 +10,19 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: plannerwebsite23@gmail.com
+    password: whsvdsxwxqsaxfdv
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: smtp.gmail.com
+          auth: true
+          starttls:
+            enable: true
 #  sql:
 #    init:
 #      mode: always
