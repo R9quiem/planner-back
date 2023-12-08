@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import task_planner_backend.auth.config.jwt.JwtUtils;
@@ -15,6 +16,8 @@ import task_planner_backend.auth.model.dto.LoginRequest;
 import task_planner_backend.auth.model.dto.MessageResponse;
 import task_planner_backend.auth.model.dto.SignupRequest;
 import task_planner_backend.auth.repository.UserRepository;
+
+import java.security.Principal;
 
 @Service
 public class AuthService {
@@ -42,13 +45,19 @@ public class AuthService {
         return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
     }
 
+    public User getUserByPrincipal(Principal principal) {
+        String username = principal.getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found with username " + username));
+    }
+
     public ResponseEntity<?> registerUser(SignupRequest signupRequest) {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is exist"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username already exists"));
         }
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is exist"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email already exists"));
         }
 
         User user = new User(signupRequest.getUsername(), signupRequest.getEmail(), passwordEncoder.encode(signupRequest.getPassword()));

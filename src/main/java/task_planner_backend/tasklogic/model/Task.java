@@ -39,19 +39,24 @@ public class Task {
     @ManyToOne
     private User user;
 
+    private String category;
+
     @PrePersist
     public void prePersist() {
         // Устанавливаем поле date на текущую дату при создании задачи
          date = new Date();
     }
 
-    public Task(String name, String description, Date date, EPriority priority, EState state, User user) {
+    public Task(String name, String description, Date date,
+                EPriority priority, EState state, User user,
+                String category) {
         this.name = name;
         this.description = description;
         this.date = date;
         this.priority = priority;
         this.state = state;
         this.user = user;
+        this.category = category;
     }
     public static Task build(TaskDTO taskDTO, User user) {
         return new Task(
@@ -60,7 +65,8 @@ public class Task {
                 taskDTO.getDate(),
                 taskDTO.getPriority(),
                 taskDTO.getState(),
-                user
+                user,
+                taskDTO.getCategory()
         );
     }
 

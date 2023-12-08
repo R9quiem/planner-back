@@ -3,11 +3,12 @@ package task_planner_backend.tasklogic.service;
 import task_planner_backend.tasklogic.model.Task;
 import task_planner_backend.tasklogic.model.dto.TaskDTO;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface TaskService {
 
-    public List<TaskDTO> getAllTasks();
+    public List<TaskDTO> getAllTasks(Principal principal);
     public TaskDTO getTaskById(Long id);
     public boolean updateTask(Long id, TaskDTO updatedTaskDTO);
     public void createTask(TaskDTO taskDTO);
