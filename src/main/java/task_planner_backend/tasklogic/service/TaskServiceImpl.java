@@ -1,8 +1,12 @@
 package task_planner_backend.tasklogic.service;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.context.SecurityContextHolder;
 import task_planner_backend.auth.model.User;
-import task_planner_backend.tasklogic.service.service.UserDetailsImpl;
+import task_planner_backend.auth.service.AuthService;
+import task_planner_backend.auth.service.UserDetailsImpl;
 import task_planner_backend.tasklogic.model.Task;
 import task_planner_backend.tasklogic.model.dto.TaskDTO;
 import task_planner_backend.tasklogic.repository.TaskRepository;
@@ -10,17 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.ArrayList;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    AuthService authService;
+
+    TaskRepository taskRepository;
     @Override
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskDTO> getAllTasks(Principal principal) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getUserByPrincipal(principal);
+
         Long userId = userDetails.getId();
 
         List<Task> tasks = taskRepository.findAllTasksByUserId(userId, Sort.by(

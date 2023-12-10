@@ -25,12 +25,15 @@ public class TaskDTO {
     @NotNull
     private EState state;
 
-    public TaskDTO(String name, String description, Date date, EPriority priority, EState state) {
+    private String category;
+
+    public TaskDTO(String name, String description, Date date, EPriority priority, EState state, String category) {
         this.name = name;
         this.description = description;
         this.date = date;
         this.priority = priority;
         this.state = state;
+        this.category = category;
     }
 
     public static TaskDTO build(Task task) {
@@ -39,7 +42,8 @@ public class TaskDTO {
                 task.getDescription(),
                 task.getDate(),
                 task.getPriority(),
-                task.getState()
+                task.getState(),
+                task.getCategory()
         );
     }
 }

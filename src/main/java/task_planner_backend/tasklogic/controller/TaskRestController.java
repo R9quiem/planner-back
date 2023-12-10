@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class TaskRestController {
 
@@ -18,8 +20,8 @@ public class TaskRestController {
     private TaskServiceImpl taskService;
 
     @GetMapping("/tasks")
-    public ResponseEntity<List<TaskDTO>> getAllTasks() {
-        List<TaskDTO> tasks = taskService.getAllTasks();
+    public ResponseEntity<List<TaskDTO>> getAllTasks(Principal principal) {
+        List<TaskDTO> tasks = taskService.getAllTasks(principal);
         return ResponseEntity.ok(tasks);
     }
 
