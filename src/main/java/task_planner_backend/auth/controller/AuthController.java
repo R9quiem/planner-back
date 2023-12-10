@@ -1,6 +1,7 @@
 package task_planner_backend.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,16 +36,22 @@ public class AuthController {
 
     @PostMapping("/reset")
     public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest passwordResetRequest) {
-        ResponseEntity<?> entity = null;
+        ResponseEntity<?> response = null;
         try {
-            senderService.sendEmail("nu38380@gmail.com",
-                    "password change",
-                    "you requested to reset your passwrod");
-            entity = authService.passwordResetEmail(passwordResetRequest);
+            // check if email exists
+            response = authService.passwordResetEmail(passwordResetRequest);
+            if(response.getStatusCode() == HttpStatus.OK) {
+                System.out.println("email exists");
+                senderService.sendEmail("nu38380@gmail.com",
+                        "password change",
+                        "you requested to reset your passwrod");
+            } else {
+                System.out.println("email not exists");
+            }
         } catch(Exception e) {
             System.out.println(e);
         }
-        return entity;
+        return response;
     }
 
 }

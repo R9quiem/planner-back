@@ -63,6 +63,9 @@ public class AuthService {
     }
 
     public ResponseEntity<?> passwordResetEmail(PasswordResetRequest passwordResetRequest){
-        return ResponseEntity.ok(new MessageResponse(" UWU "));
+        if (userRepository.existsByEmail(passwordResetRequest.getEmail())) {
+            return ResponseEntity.ok(new MessageResponse("E-Mail found, proceed sending password reset email."));
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse("No user found with the given E-Mail. Cancel password reset."));
     }
 }
