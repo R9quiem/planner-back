@@ -15,6 +15,7 @@ import task_planner_backend.auth.model.dto.*;
 import task_planner_backend.auth.repository.UserRepository;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -62,8 +63,17 @@ public class AuthService {
         return ResponseEntity.ok(new MessageResponse("User CREATED"));
     }
 
-    public ResponseEntity<?> passwordResetEmail(PasswordResetRequest passwordResetRequest){
+    public ResponseEntity<?> passwordResetEmail(PasswordResetRequest passwordResetRequest, String token){
         if (userRepository.existsByEmail(passwordResetRequest.getEmail())) {
+            List<User> userList = userRepository.findAll();
+            List<User> currentUser = userList.stream().filter(
+                    user -> user.getEmail().equals(
+                        passwordResetRequest.getEmail()
+                    )
+            ).toList();
+            currentUser.forEach(
+                    user -> {user.setPasswordResetToken(token);}
+            );
             return ResponseEntity.ok(new MessageResponse("E-Mail found, proceed sending password reset email."));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("No user found with the given E-Mail. Cancel password reset."));

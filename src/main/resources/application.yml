@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/TaskFlow
-    username: root
-    password: Alex552380
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: mouniraitaissa2018
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
