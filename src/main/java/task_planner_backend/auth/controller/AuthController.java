@@ -52,7 +52,7 @@ public class AuthController {
                 System.out.println("email not exists");
             }
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println();
         }
         return response;
     }
