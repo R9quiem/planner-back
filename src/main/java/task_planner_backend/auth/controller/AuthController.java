@@ -1,4 +1,5 @@
 package task_planner_backend.auth.controller;
+import task_planner_backend.auth.model.User;
 import task_planner_backend.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,8 +46,8 @@ public class AuthController {
                 System.out.println("email exists");
                 senderService.sendEmail( passwordResetRequest.getEmail(),
                         "password change",
-                        "you requested to reset your passwrod here is a link to verify if you are real http://localhost:8080/api/auth/areyoureal?token="+
-                                token);
+                        "you requested to reset your passwrod here is a link to verify if you are real http://localhost:8080/api/auth/resetConfirmation?token="
+                                + token + "&email=" + passwordResetRequest.getEmail());
 
             } else {
                 System.out.println("email not exists");
@@ -57,11 +58,22 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping("/mail")
-    public ResponseEntity<?> resetPassword() {
-        senderService.sendEmail("mouniraitaissa1@gmail.com",
-                "subject",
-                "body");
-        return ResponseEntity.ok("its ok");
+    @GetMapping("/resetConfirmation")
+    public ResponseEntity<?> resetConfirm(@RequestParam String email, @RequestParam String token) {
+        if(email.isEmpty()) {
+            return ResponseEntity.badRequest().body("Bad");
+        }
+        if(token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Badder");
+        }
+        User changedUser = authService.resetConfirm(email, token);
+        if(changedUser != null) {
+            senderService.sendEmail(changedUser.getEmail(),
+                "Reset Successful!",
+                "You requested to reset your passwrod. This is your new password: " + changedUser.getPassword()
+            );
+            return ResponseEntity.ok("Reset successful!");
+        }
+        return ResponseEntity.internalServerError().body("Reset failed! Something went wrong when checking the Database.");
     }
 }

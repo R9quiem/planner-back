@@ -13,6 +13,7 @@ import task_planner_backend.auth.config.jwt.JwtUtils;
 import task_planner_backend.auth.model.User;
 import task_planner_backend.auth.model.dto.*;
 import task_planner_backend.auth.repository.UserRepository;
+import task_planner_backend.utils.RandomStringGenerator;
 
 import java.security.Principal;
 import java.util.List;
@@ -66,16 +67,36 @@ public class AuthService {
     public ResponseEntity<?> passwordResetEmail(PasswordResetRequest passwordResetRequest, String token){
         if (userRepository.existsByEmail(passwordResetRequest.getEmail())) {
             List<User> userList = userRepository.findAll();
-            List<User> currentUser = userList.stream().filter(
+            User currentUser = userList.stream().filter(
                     user -> user.getEmail().equals(
                         passwordResetRequest.getEmail()
                     )
-            ).toList();
-            currentUser.forEach(
-                    user -> {user.setPasswordResetToken(token);}
-            );
+            ).findFirst().orElse(null);
+            currentUser.setPasswordResetToken(token);
+            userRepository.save(currentUser);
             return ResponseEntity.ok(new MessageResponse("E-Mail found, proceed sending password reset email."));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("No user found with the given E-Mail. Cancel password reset."));
+    }
+
+    public User resetConfirm(String email, String token){
+        if (userRepository.existsByEmail(email)) {
+            List<User> userList = userRepository.findAll();
+            User currentUser = userList.stream().filter(
+                    user -> user.getEmail().equals(
+                        email
+                    )
+            ).findFirst().orElse(null);
+            if(currentUser.getPasswordResetToken().equals(token)) {
+                // generate and return new random password
+                currentUser.setPassword(RandomStringGenerator.generateRandomString(8));
+                currentUser.setPasswordResetToken(null);
+                userRepository.save(currentUser);
+                return currentUser;
+            } else {
+                return currentUser;
+            }
+        }
+        return null;
     }
 }
