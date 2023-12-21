@@ -24,7 +24,6 @@ public class Task {
 
     private String description;
 
-    @Temporal(TemporalType.DATE)
     private Date date;
 
     @Temporal(TemporalType.DATE)
@@ -44,7 +43,7 @@ public class Task {
     @PrePersist
     public void prePersist() {
         // Устанавливаем поле date на текущую дату при создании задачи
-         date = new Date();
+         createdAt = new Date();
     }
 
     public Task(String name, String description, Date date,

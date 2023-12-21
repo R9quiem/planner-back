@@ -12,6 +12,7 @@ import java.util.Date;
 
 @Data
 public class TaskDTO {
+    private Long id;
     @NotBlank
     private String name;
 
@@ -28,7 +29,8 @@ public class TaskDTO {
 
     private String category;
 
-    public TaskDTO(String name, String description, Date date, EPriority priority, EState state, String category) {
+    public TaskDTO(Long id, String name, String description, Date date, EPriority priority, EState state, String category) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.date = date;
@@ -39,6 +41,7 @@ public class TaskDTO {
 
     public static TaskDTO build(Task task) {
         return new TaskDTO(
+                task.getId(),
                 task.getName(),
                 task.getDescription(),
                 task.getDate(),

@@ -3,6 +3,9 @@ package task_planner_backend.tasklogic.service;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import task_planner_backend.auth.model.User;
 import task_planner_backend.auth.service.AuthService;
@@ -14,9 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.beans.PropertyDescriptor;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,20 +65,25 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public boolean updateTask(Long id, TaskDTO updatedTaskDTO) {
         Task existingTask = taskRepository.findById(id).orElse(null);
+
         if (existingTask != null) {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Long userId = userDetails.getId();
 
-            User user = new User(userId);
+            if (existingTask.getUser().getId().equals(userId)) {
 
-            existingTask = Task.build(updatedTaskDTO,user);
-            taskRepository.save(existingTask);
-            return true;
+                BeanUtils.copyProperties(updatedTaskDTO, existingTask , "id");
+
+                // Сохранение изменений в репозитории
+                taskRepository.save(existingTask);
+                return true;
+            }
         }
         return false;
     }
+
     @Override
-    public void createTask(TaskDTO taskDTO) {
+    public Task createTask(TaskDTO taskDTO) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
 
@@ -79,7 +91,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = Task.build(taskDTO,user);
 
-        taskRepository.save(task);
+        return taskRepository.save(task);
     }
     @Override
     public boolean deleteTask(Long id) {
